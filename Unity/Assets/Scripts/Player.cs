@@ -16,6 +16,6 @@ public class Player : MonoBehaviour
     {
         float direction = Input.GetAxis("Vertical");
 
-        _rigibody.velocity += Vector3.forward * direction;
+        _rigibody.velocity += transform.forward * direction;
     }
 }

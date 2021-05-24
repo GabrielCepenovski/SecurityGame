@@ -33,9 +33,9 @@ public class SafetySystem : MonoBehaviour
         {
             _audio.volume = Mathf.MoveTowards(_audio.volume, 1, _rateIncreaseVolume * Time.deltaTime);
 
-            yield return null;
+            yield return new WaitForFixedUpdate();
 
-            if (_audio.volume == 1)
+            if (_audio.volume == 1) 
                 break;
         }
     }
@@ -46,9 +46,9 @@ public class SafetySystem : MonoBehaviour
         {
             _audio.volume = Mathf.MoveTowards(_audio.volume, 0, _rateIncreaseVolume * Time.deltaTime);
 
-            yield return null;
+            yield return new WaitForFixedUpdate();
 
-            if (_audio.volume == 0)
+            if (_audio.volume == 0f)
                 break;
         }
     }

@@ -9,7 +9,6 @@ public class Area : MonoBehaviour
     [SerializeField] private UnityEvent _penetration;
     [SerializeField] private UnityEvent _escaped;
 
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.TryGetComponent<Player>(out Player player))
