@@ -7,8 +7,6 @@ public class SafetySystem : MonoBehaviour
     [SerializeField] private AudioSource _audio;
     [SerializeField] private float _rateIncreaseVolume = 0.1f;
 
-    private bool _siren = false;
-
     private void Awake()
     {
         _audio.volume = 0;
@@ -18,8 +16,8 @@ public class SafetySystem : MonoBehaviour
     {
         if (_audio != null)
         {
-            _siren = true;
-            _audio.Play();
+            StopCoroutine(DownSiren());
+            StartCoroutine(UpSiren());
         }
     }
 
@@ -27,30 +25,28 @@ public class SafetySystem : MonoBehaviour
     {
         if (_audio != null)
         {
-            _siren = false;
+            StopCoroutine(UpSiren());
+            StartCoroutine(DownSiren());
         }
     }
 
-    private void Start()
+    private IEnumerator UpSiren()
     {
-        if (_audio != null)
-            StartCoroutine(UpdateSystem());
+        _audio.volume = Mathf.MoveTowards(_audio.volume, 1, _rateIncreaseVolume * Time.deltaTime);
+
+        yield return null;
+
+        if (_audio.volume == 1)
+            StopCoroutine(UpSiren());
     }
 
-    private IEnumerator UpdateSystem()
+    private IEnumerator DownSiren()
     {
-        while (true)
-        {
-            if (_siren)
-                _audio.volume = Mathf.MoveTowards(_audio.volume, 1, _rateIncreaseVolume * Time.deltaTime);
-            else
-                _audio.volume = Mathf.MoveTowards(_audio.volume, 0, _rateIncreaseVolume * Time.deltaTime);
+        _audio.volume = Mathf.MoveTowards(_audio.volume, 0, _rateIncreaseVolume * Time.deltaTime);
 
-            if (_audio.volume == 0)
-                _audio.Stop();
+        yield return null;
 
-            yield return null;
-        }
-
+        if (_audio.volume == 1)
+            StopCoroutine(DownSiren());
     }
 }
