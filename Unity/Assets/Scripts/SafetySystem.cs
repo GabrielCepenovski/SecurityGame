@@ -29,7 +29,7 @@ public class SafetySystem : MonoBehaviour
             _stay = Stay.NoCorutine;
         }
 
-        StopCoroutine(Siren());
+        StartCoroutine(Siren());
     }
 
     public void StopSiren()
@@ -42,7 +42,7 @@ public class SafetySystem : MonoBehaviour
             _stay = Stay.NoCorutine;
         }
 
-        StopCoroutine(Siren());
+        StartCoroutine(Siren());
     }
 
     private IEnumerator Siren()
