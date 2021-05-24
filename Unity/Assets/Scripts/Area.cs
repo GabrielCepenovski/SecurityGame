@@ -11,13 +11,13 @@ public class Area : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.TryGetComponent<Player>(out Player player))
+        if (other.gameObject.TryGetComponent<Player>(out Player _))
             _penetration.Invoke();
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.TryGetComponent<Player>(out Player player))
+        if (other.gameObject.TryGetComponent<Player>(out Player _))
             _escaped.Invoke();
     }
 }

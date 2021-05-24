@@ -8,48 +8,60 @@ public class SafetySystem : MonoBehaviour
     [SerializeField] private float _rateIncreaseVolume = 0.1f;
 
     private AudioSource _audio;
+    private float _targetValue;
+    private Stay _stay;
 
     private void Awake()
     {
         _audio = GetComponent<AudioSource>();
+
         _audio.volume = 0;
+        _stay = Stay.NoCorutine;
     }
 
     public void TurnSiren()
     {
-        StopCoroutine(DownSiren());
-        StartCoroutine(UpSiren());
+        _targetValue = 1;
+
+        if (_stay != Stay.NoCorutine)
+        {
+            StopCoroutine(Siren());
+            _stay = Stay.NoCorutine;
+        }
+
+        StopCoroutine(Siren());
     }
 
     public void StopSiren()
     {
-        StopCoroutine(UpSiren());
-        StartCoroutine(DownSiren());
+        _targetValue = 0;
+
+        if (_stay != Stay.NoCorutine)
+        {
+            StopCoroutine(Siren());
+            _stay = Stay.NoCorutine;
+        }
+
+        StopCoroutine(Siren());
     }
 
-    private IEnumerator UpSiren()
+    private IEnumerator Siren()
     {
+        _stay = Stay.Corutine;
         while (true)
         {
-            _audio.volume = Mathf.MoveTowards(_audio.volume, 1, _rateIncreaseVolume * Time.deltaTime);
+            _audio.volume = Mathf.MoveTowards(_audio.volume, _targetValue, _rateIncreaseVolume * Time.deltaTime);
 
-            yield return new WaitForFixedUpdate();
+            yield return null;
 
-            if (_audio.volume == 1) 
+            if (_audio.volume == _targetValue) 
                 break;
         }
     }
 
-    private IEnumerator DownSiren()
+    private enum Stay
     {
-        while (true)
-        {
-            _audio.volume = Mathf.MoveTowards(_audio.volume, 0, _rateIncreaseVolume * Time.deltaTime);
-
-            yield return new WaitForFixedUpdate();
-
-            if (_audio.volume == 0f)
-                break;
-        }
+        NoCorutine,
+        Corutine
     }
 }
