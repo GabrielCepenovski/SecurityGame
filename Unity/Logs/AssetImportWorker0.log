@@ -666,3 +666,26 @@ System memory in use after: 98.6 MB.
 Unloading 9 unused Assets to reduce memory usage. Loaded Objects now: 3197.
 Total: 2.528600 ms (FindLiveObjects: 0.269000 ms CreateObjectMapping: 0.123800 ms MarkObjects: 2.071300 ms  DeleteObjects: 0.062200 ms)
 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.002531 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image C:\UnityProjects\SecurityGame\Unity\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image C:\UnityProjects\SecurityGame\Unity\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.89 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.842 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.56 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2664 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 98.4 MB.
+System memory in use after: 98.6 MB.
+
+Unloading 9 unused Assets to reduce memory usage. Loaded Objects now: 3200.
+Total: 2.069500 ms (FindLiveObjects: 0.255400 ms CreateObjectMapping: 0.069500 ms MarkObjects: 1.675500 ms  DeleteObjects: 0.066900 ms)
+
+AssetImportWorkerClient::OnTransportError - code=2 error=End of file
