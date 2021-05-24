@@ -47,6 +47,9 @@ public class SafetySystem : MonoBehaviour
 
     private IEnumerator Siren()
     {
+        if (_audio.isPlaying == false)
+            _audio.Play();
+
         _stay = Stay.Corutine;
         while (true)
         {
@@ -57,6 +60,9 @@ public class SafetySystem : MonoBehaviour
             if (_audio.volume == _targetValue) 
                 break;
         }
+
+        if (_audio.isPlaying && _audio.volume == 0)
+            _audio.Stop();
     }
 
     private enum Stay
