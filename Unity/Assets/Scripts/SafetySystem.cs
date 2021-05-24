@@ -2,51 +2,54 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class SafetySystem : MonoBehaviour
 {
-    [SerializeField] private AudioSource _audio;
     [SerializeField] private float _rateIncreaseVolume = 0.1f;
+
+    private AudioSource _audio;
 
     private void Awake()
     {
+        _audio = GetComponent<AudioSource>();
         _audio.volume = 0;
     }
 
     public void TurnSiren()
     {
-        if (_audio != null)
-        {
-            StopCoroutine(DownSiren());
-            StartCoroutine(UpSiren());
-        }
+        StopCoroutine(DownSiren());
+        StartCoroutine(UpSiren());
     }
 
     public void StopSiren()
     {
-        if (_audio != null)
-        {
-            StopCoroutine(UpSiren());
-            StartCoroutine(DownSiren());
-        }
+        StopCoroutine(UpSiren());
+        StartCoroutine(DownSiren());
     }
 
     private IEnumerator UpSiren()
     {
-        _audio.volume = Mathf.MoveTowards(_audio.volume, 1, _rateIncreaseVolume * Time.deltaTime);
+        while (true)
+        {
+            _audio.volume = Mathf.MoveTowards(_audio.volume, 1, _rateIncreaseVolume * Time.deltaTime);
 
-        yield return null;
+            yield return null;
 
-        if (_audio.volume == 1)
-            StopCoroutine(UpSiren());
+            if (_audio.volume == 1)
+                break;
+        }
     }
 
     private IEnumerator DownSiren()
     {
-        _audio.volume = Mathf.MoveTowards(_audio.volume, 0, _rateIncreaseVolume * Time.deltaTime);
+        while (true)
+        {
+            _audio.volume = Mathf.MoveTowards(_audio.volume, 0, _rateIncreaseVolume * Time.deltaTime);
 
-        yield return null;
+            yield return null;
 
-        if (_audio.volume == 1)
-            StopCoroutine(DownSiren());
+            if (_audio.volume == 0)
+                break;
+        }
     }
 }
