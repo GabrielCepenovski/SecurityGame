@@ -2,55 +2,54 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class SafetySystem : MonoBehaviour
 {
-    [SerializeField] private AudioSource _audio;
     [SerializeField] private float _rateIncreaseVolume = 0.1f;
 
-    private bool _siren = false;
+    private AudioSource _audio;
 
     private void Awake()
     {
+        _audio = GetComponent<AudioSource>();
         _audio.volume = 0;
     }
 
     public void TurnSiren()
     {
-        if (_audio != null)
-        {
-            _siren = true;
-            _audio.Play();
-        }
+        StopCoroutine(DownSiren());
+        StartCoroutine(UpSiren());
     }
 
     public void StopSiren()
     {
-        if (_audio != null)
-        {
-            _siren = false;
-        }
+        StopCoroutine(UpSiren());
+        StartCoroutine(DownSiren());
     }
 
-    private void Start()
-    {
-        if (_audio != null)
-            StartCoroutine(UpdateSystem());
-    }
-
-    private IEnumerator UpdateSystem()
+    private IEnumerator UpSiren()
     {
         while (true)
         {
-            if (_siren)
-                _audio.volume = Mathf.MoveTowards(_audio.volume, 1, _rateIncreaseVolume * Time.deltaTime);
-            else
-                _audio.volume = Mathf.MoveTowards(_audio.volume, 0, _rateIncreaseVolume * Time.deltaTime);
-
-            if (_audio.volume == 0)
-                _audio.Stop();
+            _audio.volume = Mathf.MoveTowards(_audio.volume, 1, _rateIncreaseVolume * Time.deltaTime);
 
             yield return null;
-        }
 
+            if (_audio.volume == 1)
+                break;
+        }
+    }
+
+    private IEnumerator DownSiren()
+    {
+        while (true)
+        {
+            _audio.volume = Mathf.MoveTowards(_audio.volume, 0, _rateIncreaseVolume * Time.deltaTime);
+
+            yield return null;
+
+            if (_audio.volume == 0)
+                break;
+        }
     }
 }
