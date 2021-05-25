@@ -9,40 +9,33 @@ public class SafetySystem : MonoBehaviour
 
     private AudioSource _audio;
     private float _targetValue;
-    private Stay _stay;
+    private Coroutine _sirenJob;
 
     private void Awake()
     {
         _audio = GetComponent<AudioSource>();
 
         _audio.volume = 0;
-        _stay = Stay.NoCorutine;
     }
 
     public void TurnSiren()
     {
         _targetValue = 1;
 
-        if (_stay != Stay.NoCorutine)
-        {
-            StopCoroutine(Siren());
-            _stay = Stay.NoCorutine;
-        }
+        if (_sirenJob != null)
+            StopCoroutine(_sirenJob);
 
-        StartCoroutine(Siren());
+        _sirenJob = StartCoroutine(Siren());
     }
 
     public void StopSiren()
     {
         _targetValue = 0;
 
-        if (_stay != Stay.NoCorutine)
-        {
-            StopCoroutine(Siren());
-            _stay = Stay.NoCorutine;
-        }
+        if (_sirenJob != null)
+            StopCoroutine(_sirenJob);
 
-        StartCoroutine(Siren());
+        _sirenJob = StartCoroutine(Siren());
     }
 
     private IEnumerator Siren()
@@ -50,7 +43,6 @@ public class SafetySystem : MonoBehaviour
         if (_audio.isPlaying == false)
             _audio.Play();
 
-        _stay = Stay.Corutine;
         while (true)
         {
             _audio.volume = Mathf.MoveTowards(_audio.volume, _targetValue, _rateIncreaseVolume * Time.deltaTime);
@@ -63,11 +55,5 @@ public class SafetySystem : MonoBehaviour
 
         if (_audio.isPlaying && _audio.volume == 0)
             _audio.Stop();
-    }
-
-    private enum Stay
-    {
-        NoCorutine,
-        Corutine
     }
 }
